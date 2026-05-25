@@ -1,19 +1,38 @@
 # BI.ROSEL Dashboard
 
-Recreation of a corporate BI dashboard mock-up in React + Vite. Three hourglasses (left blue, center orange, right purple) sit on lit pedestals; sand falls continuously through their necks via a `<canvas>` particle system overlaid on the SVG glass.
+Light, premium executive BI dashboard mock-up. Three SVG hourglasses (blue / orange / purple) sit on lit pedestals; sand falls continuously through the neck via a CSS-animated `<line>` with `stroke-dasharray` plus a swarm of `<circle>` grains with staggered `animation-delay` — no Canvas, no WebGL.
+
+**Stack:** React 18 · TypeScript · Vite · Tailwind CSS · Framer Motion · lucide-react.
 
 ## Quick start
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5173/clock/
 npm run build    # production bundle in dist/
 ```
 
-## What's in here
+## Layout
 
-- `src/App.jsx` — page layout and palette config for the three hourglasses.
-- `src/components/Hourglass.jsx` — SVG bulb + neck + scale labels, with a `<canvas>` overlay running a small particle simulation (`requestAnimationFrame`). Particles spawn at the top, funnel through the neck, and despawn at the pile surface so the stream is endless.
-- `src/components/StatsCard.jsx` — "ВЫРУЧКА" card with plan/fact values, progress bar.
-- `src/components/TopBar.jsx`, `Footer.jsx` — page chrome.
-- `src/App.css` — all of the visual styling.
+- `src/App.tsx` — page shell + decorative background (dot patterns, orbits, soft colour blobs).
+- `src/components/Header.tsx` — top bar (logo, nav, period, icons, avatar).
+- `src/components/DashboardTitle.tsx` — page heading and subheading.
+- `src/components/HourglassScene.tsx` — 3-column grid of `RevenueColumn`s.
+- `src/components/RevenueColumn.tsx` — one hourglass + KPI card; scales the featured (centre) column up.
+- `src/components/Hourglass.tsx` — the SVG: bulbs, neck, sand pile, top sand mass, animated stream, scale labels, metallic cap with neon rim, 3D pedestal.
+- `src/components/KpiCard.tsx` — "ВЫРУЧКА" card with plan/fact and a Framer-Motion animated progress bar.
+- `src/components/FooterStatus.tsx` — bottom info bar and refresh button.
+- `src/data/segments.ts` — segment definitions, colour palettes, helpers.
+- `src/index.css` — Tailwind base + the sand keyframes (`streamDash`, `particleFall`, `sandSurface`, `ringPulse`).
+
+## Common tweaks (see inline `⬇` comments)
+
+| Want to change | File / location |
+|---|---|
+| Bulb shape | `Hourglass.tsx` — `TOP_BULB` / `BOT_BULB` SVG path constants |
+| Stream speed | `index.css` — `streamDash` keyframe duration on `.sand-stream` |
+| Grain speed | `index.css` — `particleFall` keyframe duration on `.sand-particle` |
+| Sand / neon colours | `data/segments.ts` — `palettes` object |
+| Plan / Fact values | `data/segments.ts` — `segments` array |
+| Featured-column scale | `RevenueColumn.tsx` — `FEATURED_SCALE` / `SIDE_SCALE` |
+| Stream thickness | `Hourglass.tsx` — `strokeWidth` on the three `<line>` elements of the stream |
